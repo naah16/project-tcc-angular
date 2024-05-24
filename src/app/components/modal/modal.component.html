@@ -1,1 +1,30 @@
-<p>modal works!</p>
+<div *ngIf="isOpen" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+    <button
+      type="button"
+      class="absolute top-4 right-4 text-gray-400 hover:text-gray-900"
+      (click)="handleClose()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <h3 class="text-lg font-semibold mb-4">{{ title }}</h3>
+    <div class="mb-4">
+      <ng-content></ng-content>
+    </div>
+    <div class="flex gap-2 justify-end">
+      <button 
+        *ngIf="onConfirm.observers.length > 0" 
+        (click)="handleConfirm()"
+        class="flex items-center gap-2 text-sm px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-500"
+      >
+        Confirmar
+      </button>
+      <button 
+        (click)="handleClose()"
+        class="flex items-center gap-2 text-sm px-4 py-2 rounded-xl text-gray-600 border-2 border-gray-600 hover:bg-gray-200"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>

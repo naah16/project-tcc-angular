@@ -1,0 +1,32 @@
+<header class="bg-gray-300">
+  <nav class="mx-auto flex items-center justify-between py-2 px-4" aria-label="Navegação">
+    <div class="flex items-center">
+      <img src="assets/img/logo-horizontal.png" alt="Logo IFTM Horizontal" width="120" height="100" />
+    </div>
+    <!-- Menu Desktop -->
+    <div class="hidden md:flex md:gap-x-12">
+      <a *ngFor="let item of navigation" [routerLink]="item.path" (click)="handleLinkClick($event, item.path)"
+        class="block rounded-xl px-3 py-2 text-base font-medium"
+        [ngClass]="{'bg-gray-800 text-white': currentPath === item.path, 'text-gray-600 hover:bg-gray-800 hover:text-white': currentPath !== item.path}">
+        {{ item.name }}
+      </a>
+    </div>
+    <!-- Botão Hambúrguer para Modo Móvel -->
+    <div class="md:hidden">
+      <button type="button" class="rounded-md p-2.5 text-gray-700" (click)="toggleMenu()">
+        <mat-icon>{{ isOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
+    </div>
+  </nav>
+  <!-- Menu Móvel -->
+  <div *ngIf="isOpen" class="md:hidden">
+    <div class="flex flex-col px-4 py-2">
+      <a *ngFor="let item of navigation" [routerLink]="item.path" (click)="handleLinkClick($event, item.path)"
+        class="block rounded-xl px-3 py-2 text-base font-medium"
+        [ngClass]="{'bg-gray-800 text-white': currentPath === item.path, 'text-gray-600 hover:bg-gray-800 hover:text-white': currentPath !== item.path}"
+      >
+        {{ item.name }}
+      </a>
+    </div>
+  </div>
+</header>
