@@ -21,10 +21,12 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
+  keysTodos: string[] = [];
   todoForm: FormGroup;
   isModalEditOpen = false;
   isModalDeleteOpen = false;
   currentTodoId: number | null = null;
+  currentTodoKey: string | null = null;
 
   constructor(private todoService: TodoService, private fb: FormBuilder) {
     this.todoForm = this.fb.group({
@@ -37,7 +39,10 @@ export class TodoListComponent implements OnInit {
   }
 
   getTodos(): void {
-    this.todoService.getTodos().subscribe(todos => this.todos = todos);
+    this.todoService.getTodos().subscribe(todos => { 
+      this.keysTodos = Object.keys(todos);
+      this.todos = Object.values(todos);
+    });
   }
 
   addTodo(): void {
@@ -64,9 +69,9 @@ export class TodoListComponent implements OnInit {
   }
 
   deleteTodo(): void {
-    if (this.currentTodoId !== null) {
-      this.todoService.deleteTodo(this.currentTodoId).subscribe(() => {
-        this.todos = this.todos.filter(todo => todo.id !== this.currentTodoId);
+    if (this.currentTodoKey !== null) {
+      this.todoService.deleteTodo(this.currentTodoKey).subscribe(() => {
+        delete this.todos[Number(this.currentTodoKey)];
         this.handleModalDeleteClose();
       });
     }

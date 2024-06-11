@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ export interface Todo {
   providedIn: 'root',
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:3333/todos';
+  private apiUrl = 'https://server-7m4zhbfadq-uc.a.run.app/todos';
 
   constructor(private http: HttpClient) {}
 
@@ -37,7 +37,7 @@ export class TodoService {
     );
   }
 
-  deleteTodo(id: number): Observable<Todo> {
+  deleteTodo(id: string): Observable<Todo> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<Todo>(url).pipe(
       catchError(this.handleError<Todo>('deleteTodo'))
