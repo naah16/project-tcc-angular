@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 export interface Todo {
+  key: string;
+  id: number;
+  userId: number;
+  title: string;
+  completed: boolean;
+}
+
+export interface TodoPost {
   id: number;
   userId: number;
   title: string;
@@ -14,31 +22,40 @@ export interface Todo {
   providedIn: 'root',
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:3333/todos';
+  private apiUrl = 'https://server-7m4zhbfadq-uc.a.run.app/todos';
+  private apiUrlCount = 'https://server-7m4zhbfadq-uc.a.run.app/todos/count';
 
   constructor(private http: HttpClient) {}
 
-  getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.apiUrl).pipe(
+  getTodos(offset: number, limit: number): Observable<Todo[]> {
+    const url = `${this.apiUrl}?offset=${offset}&limit=${limit}`;
+    return this.http.get<Todo[]>(url).pipe(
       catchError(this.handleError<Todo[]>('getTodos', []))
     );
   }
 
-  addTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.apiUrl, todo).pipe(
-      catchError(this.handleError<Todo>('addTodo'))
+  getTodosCount(): Observable<{count: number}> {
+    return this.http.get<{count: number}>(this.apiUrlCount).pipe(
+      catchError(this.handleError<{count: number}>('getTodosCount', {count: 0}))
+    );
+
+  }
+
+  addTodo(todo: TodoPost): Observable<TodoPost> {
+    return this.http.post<TodoPost>(this.apiUrl, todo).pipe(
+      catchError(this.handleError<TodoPost>('addTodo'))
     );
   }
 
   updateTodo(todo: Todo): Observable<any> {
-    const url = `${this.apiUrl}/${todo.id}`;
+    const url = `${this.apiUrl}/${todo.key}`;
     return this.http.put(url, todo).pipe(
       catchError(this.handleError<any>('updateTodo'))
     );
   }
 
-  deleteTodo(id: number): Observable<Todo> {
-    const url = `${this.apiUrl}/${id}`;
+  deleteTodo(key: string): Observable<Todo> {
+    const url = `${this.apiUrl}/${key}`;
     return this.http.delete<Todo>(url).pipe(
       catchError(this.handleError<Todo>('deleteTodo'))
     );
