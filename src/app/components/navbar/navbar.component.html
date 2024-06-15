@@ -5,9 +5,15 @@
     </div>
     <!-- Menu Desktop -->
     <div class="hidden md:flex md:gap-x-12">
-      <a *ngFor="let item of navigation" [routerLink]="item.path" (click)="handleLinkClick($event, item.path)"
-        class="block rounded-xl px-3 py-2 text-base font-medium"
-        [ngClass]="{'bg-gray-800 text-white': currentPath === item.path, 'text-gray-600 hover:bg-gray-800 hover:text-white': currentPath !== item.path}">
+      <a 
+        [routerLink]="item.path" 
+        [routerLink]="item.path" 
+        routerLinkActive="bg-gray-800 text-white"
+        [routerLinkActiveOptions]="{exact: true}"
+        (click)="handleLinkClick($event, item.path)"
+        class="block rounded-xl px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-800 hover:text-white"
+        *ngFor="let item of navigation" 
+      >
         {{ item.name }}
       </a>
     </div>
@@ -21,9 +27,13 @@
   <!-- Menu Móvel -->
   <div *ngIf="isOpen" class="md:hidden">
     <div class="flex flex-col px-4 py-2">
-      <a *ngFor="let item of navigation" [routerLink]="item.path" (click)="handleLinkClick($event, item.path)"
-        class="block rounded-xl px-3 py-2 text-base font-medium"
-        [ngClass]="{'bg-gray-800 text-white': currentPath === item.path, 'text-gray-600 hover:bg-gray-800 hover:text-white': currentPath !== item.path}"
+      <a 
+        *ngFor="let item of navigation" 
+        [routerLink]="item.path" 
+        routerLinkActive="bg-gray-800 text-white"
+        [routerLinkActiveOptions]="{exact: true}"
+        (click)="handleLinkClick($event, item.path)"
+        class="block rounded-xl px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-800 hover:text-white"
       >
         {{ item.name }}
       </a>
